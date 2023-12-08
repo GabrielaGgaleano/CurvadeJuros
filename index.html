@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+     
+    <title>Curva</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <h4></h4>
+        <div class="profile">
+            <img class="profile" src="img/siga.png">
+        </div>
+    </nav>
+    <!-- Telas com os dois iframes -->
+    <div class="iframe-container">
+        <!-- Tela 1 -->
+        <div id="tela1" class="tela01">
+            <div class="iframe-wrapper">
+                <iframe src="https://www.anbima.com.br/pt_br/informar/curvas-de-juros-fechamento.htm" class="iframe"></iframe>
+            </div>
+        </div>
+
+        <!-- Tela 2 (inicialmente oculto) -->
+        <div id="tela2" class="tela2" style="display: none;">
+            <iframe src="https://fred.stlouisfed.org/graph/graph-landing.php?g=1ckGo&width=670&height=475" scrolling="no" frameborder="0" style="overflow:hidden; width:670px; height:525px;" allowTransparency="true" loading="lazy"></iframe>        
+        </div>
+        </div>
+    </div>
+
+    <script>
+        var iframe1 = document.getElementById('tela1');
+        var iframe2 = document.getElementById('tela2');
+        var seconds = 10; // tempo em segundos
+
+        function toggleIframes() {
+            if (iframe1.style.display === 'none') {
+                iframe1.style.display = 'block';
+                iframe2.style.display = 'none';
+            } else {
+                iframe1.style.display = 'none';
+                iframe2.style.display = 'block';
+            }
+        }
+
+        setInterval(toggleIframes, seconds * 1000);
+    </script>
+</body>
+</html>
