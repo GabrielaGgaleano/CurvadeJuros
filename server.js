@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 
 const app = express();
-const port = 3002;
+const port = 8080;
 
 // Servir arquivos estáticos (HTML, CSS, JS, imagens)
 app.use(express.static(path.join(__dirname, 'public')));
