@@ -23,15 +23,12 @@
             <div class="iframe-wrapper">
                 <iframe src="https://www.anbima.com.br/pt_br/informar/curvas-de-juros-fechamento.htm" class="iframe"></iframe>
             </div>
-        </div>
-
-        <!-- Tela 2 (inicialmente oculto) -->
-        <div id="tela2" class="tela2" style="display: none;">
-            <iframe src="https://fred.stlouisfed.org/graph/graph-landing.php?g=1ckGo&width=670&height=475" scrolling="no" frameborder="0" style="overflow:hidden; width:670px; height:525px;" allowTransparency="true" loading="lazy"></iframe>        
-        </div>
-        </div>
     </div>
-
+        <!-- Tela 2 (inicialmente oculto) -->
+    <div id="tela2" class="tela2" style="display: none;">
+         <iframe src="https://fred.stlouisfed.org/graph/graph-landing.php?g=1czlu&width=670&height=475" scrolling="no" frameborder="0" style="overflow:hidden; width:670px; height:525px;" allowTransparency="true" loading="lazy"></iframe>
+    </div>
+    </div>
     <script>
         var iframe1 = document.getElementById('tela1');
         var iframe2 = document.getElementById('tela2');
@@ -47,7 +44,8 @@
             }
         }
 
-        setInterval(toggleIframes, seconds * 1000);
+        setInterval(toggleIframes, seconds * 1500);
     </script>
+     <link rel="stylesheet" href="server.js">
 </body>
 </html>
