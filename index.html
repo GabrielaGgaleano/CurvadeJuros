@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
      
     <title>Curva</title>
 </head>
@@ -16,6 +17,13 @@
             <img class="profile" src="img/siga.png">
         </div>
     </nav>
+
+    <!-- Adicionado o card para exibir informações da API -->
+    <div class="card">
+        <h2></h2>
+        <div id="alphaVantageData"></div>
+    </div>
+
     <!-- Telas com os dois iframes -->
     <div class="iframe-container">
         <!-- Tela 1 -->
@@ -23,12 +31,14 @@
             <div class="iframe-wrapper">
                 <iframe src="https://www.anbima.com.br/pt_br/informar/curvas-de-juros-fechamento.htm" class="iframe"></iframe>
             </div>
-    </div>
+        </div>
+
         <!-- Tela 2 (inicialmente oculto) -->
-    <div id="tela2" class="tela2" style="display: none;">
-         <iframe src="https://fred.stlouisfed.org/graph/graph-landing.php?g=1czlu&width=670&height=475" scrolling="no" frameborder="0" style="overflow:hidden; width:670px; height:525px;" allowTransparency="true" loading="lazy"></iframe>
+        <div id="tela2" class="tela2" style="display: none;">
+            <iframe src="https://fred.stlouisfed.org/graph/graph-landing.php?g=1czlu&width=670&height=475" scrolling="no" frameborder="0" style="overflow:hidden; width:670px; height:525px;" allowTransparency="true" loading="lazy"></iframe>
+        </div>
     </div>
-    </div>
+
     <script>
         var iframe1 = document.getElementById('tela1');
         var iframe2 = document.getElementById('tela2');
@@ -45,7 +55,27 @@
         }
 
         setInterval(toggleIframes, seconds * 1500);
+
+        // Função para obter dados da API Alpha Vantage e exibir no card
+        var request = require('request');
+
+// replace the "demo" apikey below with your own key from https://www.alphavantage.co/support/#api-key
+        var url = 'https://www.alphavantage.co/query?function=NATURAL_GAS&interval=monthly&apikey=YSYPO80DKE6F2WJO';
+            request.get({
+                url: url,
+                json: true,
+                headers: {'User-Agent': 'request'}
+            }, (err, res, data) => {
+                if (err) {
+                console.log('Error:', err);
+                } else if (res.statusCode !== 200) {
+                console.log('Status:', res.statusCode);
+                } else {
+                // data is successfully parsed as a JSON object:
+                console.log(data);
+                }
+            });
     </script>
-     <link rel="stylesheet" href="server.js">
+    <link rel="stylesheet" href="file.js">
 </body>
 </html>
