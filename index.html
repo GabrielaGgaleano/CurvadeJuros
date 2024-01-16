@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,20 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
      
     <title>Curva</title>
+    <style>
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #henryHubData {
+            margin-top: 16px;
+        }
+    </style>
 </head>
 <body>
     <!-- Navbar -->
@@ -18,10 +32,13 @@
         </div>
     </nav>
 
-    <!-- Adicionado o card para exibir informações da API -->
+    <!-- Adicionado o card para exibir informações do Henry Hub Natural Gas -->
     <div class="card">
-        <h2></h2>
-        <div id="alphaVantageData"></div>
+        <h2>Dados do Henry Hub Natural Gas</h2>
+        <label for="selectedDate">Selecione uma data:</label>
+        <input type="date" id="selectedDate">
+        <button onclick="getHenryHubData()">Obter Dados</button>
+        <div id="henryHubData"></div>
     </div>
 
     <!-- Telas com os dois iframes -->
@@ -35,14 +52,14 @@
 
         <!-- Tela 2 (inicialmente oculto) -->
         <div id="tela2" class="tela2" style="display: none;">
-            <iframe src="https://fred.stlouisfed.org/graph/graph-landing.php?g=1czlu&width=670&height=475" scrolling="no" frameborder="0" style="overflow:hidden; width:670px; height:525px;" allowTransparency="true" loading="lazy"></iframe>
+            <iframe src="https://fred.stlouisfed.org/graph/graph-landing.php?g=1dRxU&width=670&height=475" scrolling="no" frameborder="0" style="overflow:hidden; width:670px; height:525px;" allowTransparency="true" loading="lazy"></iframe>
         </div>
     </div>
 
     <script>
         var iframe1 = document.getElementById('tela1');
         var iframe2 = document.getElementById('tela2');
-        var seconds = 10; // tempo em segundos
+        var seconds = 1000; // tempo em segundos
 
         function toggleIframes() {
             if (iframe1.style.display === 'none') {
@@ -54,28 +71,59 @@
             }
         }
 
-        setInterval(toggleIframes, seconds * 1500);
+        function getHenryHubData() {
+        const selectedDate = document.getElementById('selectedDate').value;
+        const loadingMessage = 'Carregando dados...';
+        const errorMessage = 'Erro ao obter dados da API do Alpha Vantage para o Gás Natural';
 
-        // Função para obter dados da API Alpha Vantage e exibir no card
-        var request = require('request');
+        // Exibir mensagem de carregamento
+        const henryHubDataElement = document.getElementById('henryHubData');
+        henryHubDataElement.innerText = loadingMessage;
 
-// replace the "demo" apikey below with your own key from https://www.alphavantage.co/support/#api-key
-        var url = 'https://www.alphavantage.co/query?function=NATURAL_GAS&interval=monthly&apikey=YSYPO80DKE6F2WJO';
-            request.get({
-                url: url,
-                json: true,
-                headers: {'User-Agent': 'request'}
-            }, (err, res, data) => {
-                if (err) {
-                console.log('Error:', err);
-                } else if (res.statusCode !== 200) {
-                console.log('Status:', res.statusCode);
+        // Função para obter dados do Gás Natural para a data selecionada usando a API do Alpha Vantage
+        const apiKey = 'YSYPO80DKE6F2WJO';  // Substitua pela sua chave do Alpha Vantage
+        const symbol = 'NG';  // Símbolo para o gás natural
+        const alphaVantageUrl = `https://www.alphavantage.co/query?function=NATURAL_GAS&interval=monthly&apikey=demo`;
+
+
+
+      axios.get(alphaVantageUrl)
+           .then(response => {
+                 console.log('Dados da API do Alpha Vantage:', response.data);
+
+                const timeSeries = response.data['Time Series (Daily)'];
+
+               // Verificar se a data selecionada tem dados
+               if (timeSeries[selectedDate]) {
+                    const priceData = timeSeries[selectedDate];
+                     let closingPrice;
+
+                     // Tentar identificar a propriedade correta para o preço de fechamento
+                   if ('4. close' in priceData) {
+                         closingPrice = priceData['4. close'];
+                     } else if ('5. adjusted close' in priceData) {
+                         closingPrice = priceData['5. adjusted close'];
+                     } else {
+                        // Se nenhuma propriedade for encontrada, exibir mensagem de erro
+                       henryHubDataElement.innerText = `Não foi possível encontrar a propriedade correta para o preço de fechamento.`;
+                        return;
+                    }
+                 // Converter o valor para uma string formatada
+                    const formattedValue = parseFloat(closingPrice).toFixed(2);
+                   const date = selectedDate;
+                    const value = formattedValue;
+
+                   henryHubDataElement.innerHTML = `<strong>Data:</strong> ${date}<br><strong>Valor:</strong> ${value}`;
                 } else {
-                // data is successfully parsed as a JSON object:
-                console.log(data);
-                }
-            });
+                 henryHubDataElement.innerText = `Não há dados disponíveis para ${selectedDate}`;
+                 }
+           })
+             .catch(error => {
+                console.error('Erro na solicitação da API do Alpha Vantage para o Gás Natural:', error);
+                 henryHubDataElement.innerText = errorMessage;
+           });
+     }
+    setInterval(toggleIframes, seconds * 10);
     </script>
-    <link rel="stylesheet" href="file.js">
 </body>
 </html>
