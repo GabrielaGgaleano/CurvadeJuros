@@ -5,21 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-     
     <title>Curva</title>
     <style>
-        .card {
+        /* Estilos básicos para o card */
+        #card {
+            width: 300px;
+            padding: 10px;
             border: 1px solid #ccc;
             border-radius: 8px;
-            padding: 16px;
-            margin: 16px;
-            width: 300px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px;
         }
 
-        #henryHubData {
-            margin-top: 16px;
+        input {
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 8px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -32,98 +41,61 @@
         </div>
     </nav>
 
-    <!-- Adicionado o card para exibir informações do Henry Hub Natural Gas -->
-    <div class="card">
-        <h2>Dados do Henry Hub Natural Gas</h2>
-        <label for="selectedDate">Selecione uma data:</label>
-        <input type="date" id="selectedDate">
-        <button onclick="getHenryHubData()">Obter Dados</button>
-        <div id="henryHubData"></div>
-    </div>
-
     <!-- Telas com os dois iframes -->
     <div class="iframe-container">
         <!-- Tela 1 -->
         <div id="tela1" class="tela01">
             <div class="iframe-wrapper">
-                <iframe src="https://www.anbima.com.br/pt_br/informar/curvas-de-juros-fechamento.htm" class="iframe"></iframe>
+                <iframe id="iframe1" src="https://www.anbima.com.br/pt_br/informar/curvas-de-juros-fechamento.htm" class="iframe" frameborder="0"></iframe>
             </div>
         </div>
 
         <!-- Tela 2 (inicialmente oculto) -->
         <div id="tela2" class="tela2" style="display: none;">
-            <iframe src="https://fred.stlouisfed.org/graph/graph-landing.php?g=1dRxU&width=670&height=475" scrolling="no" frameborder="0" style="overflow:hidden; width:670px; height:525px;" allowTransparency="true" loading="lazy"></iframe>
+            <div class="embed-container">
+                <iframe src="https://fred.stlouisfed.org/graph/graph-landing.php?g=1ettu&width=670&height=475" scrolling="no" frameborder="0" style="overflow:hidden; width:670px; height:525px;" allowTransparency="true" loading="lazy"></iframe>
+            </div>
         </div>
     </div>
 
-    <script>
-        var iframe1 = document.getElementById('tela1');
-        var iframe2 = document.getElementById('tela2');
-        var seconds = 1000; // tempo em segundos
+    <!-- Card para exibir informações -->
+    <div id="card" style="display: none;">
+        <h3>Observation</h3>
+        <p>Dec 2023: 2.52 <span id="observationValue"></span></p>
+        <p>Updated: Jan 4, 2024</p>
+    </div>
 
+    <script>
         function toggleIframes() {
+            var iframe1 = document.getElementById('tela1');
+            var iframe2 = document.getElementById('tela2');
+            var card = document.getElementById('card');
+
             if (iframe1.style.display === 'none') {
                 iframe1.style.display = 'block';
                 iframe2.style.display = 'none';
+                card.style.display = 'none';
             } else {
                 iframe1.style.display = 'none';
                 iframe2.style.display = 'block';
+                card.style.display = 'block';
+
+                // Extrair o último número do gráfico
+                extrairUltimoNumero();
+
+                // Definir o valor da observação
+                document.getElementById('observationValue').textContent = "2.52";
             }
         }
 
-        function getHenryHubData() {
-        const selectedDate = document.getElementById('selectedDate').value;
-        const loadingMessage = 'Carregando dados...';
-        const errorMessage = 'Erro ao obter dados da API do Alpha Vantage para o Gás Natural';
+        function iniciarTimerTrocaTela() {
+            var tempoTrocaTela = 15000;
+            setInterval(toggleIframes, tempoTrocaTela);
+        }
 
-        // Exibir mensagem de carregamento
-        const henryHubDataElement = document.getElementById('henryHubData');
-        henryHubDataElement.innerText = loadingMessage;
-
-        // Função para obter dados do Gás Natural para a data selecionada usando a API do Alpha Vantage
-        const apiKey = 'YSYPO80DKE6F2WJO';  // Substitua pela sua chave do Alpha Vantage
-        const symbol = 'NG';  // Símbolo para o gás natural
-        const alphaVantageUrl = `https://www.alphavantage.co/query?function=NATURAL_GAS&interval=monthly&apikey=demo`;
-
-
-
-      axios.get(alphaVantageUrl)
-           .then(response => {
-                 console.log('Dados da API do Alpha Vantage:', response.data);
-
-                const timeSeries = response.data['Time Series (Daily)'];
-
-               // Verificar se a data selecionada tem dados
-               if (timeSeries[selectedDate]) {
-                    const priceData = timeSeries[selectedDate];
-                     let closingPrice;
-
-                     // Tentar identificar a propriedade correta para o preço de fechamento
-                   if ('4. close' in priceData) {
-                         closingPrice = priceData['4. close'];
-                     } else if ('5. adjusted close' in priceData) {
-                         closingPrice = priceData['5. adjusted close'];
-                     } else {
-                        // Se nenhuma propriedade for encontrada, exibir mensagem de erro
-                       henryHubDataElement.innerText = `Não foi possível encontrar a propriedade correta para o preço de fechamento.`;
-                        return;
-                    }
-                 // Converter o valor para uma string formatada
-                    const formattedValue = parseFloat(closingPrice).toFixed(2);
-                   const date = selectedDate;
-                    const value = formattedValue;
-
-                   henryHubDataElement.innerHTML = `<strong>Data:</strong> ${date}<br><strong>Valor:</strong> ${value}`;
-                } else {
-                 henryHubDataElement.innerText = `Não há dados disponíveis para ${selectedDate}`;
-                 }
-           })
-             .catch(error => {
-                console.error('Erro na solicitação da API do Alpha Vantage para o Gás Natural:', error);
-                 henryHubDataElement.innerText = errorMessage;
-           });
-     }
-    setInterval(toggleIframes, seconds * 10);
+        window.onload = function () {
+            iniciarTimerTrocaTela();
+        };
     </script>
 </body>
 </html>
