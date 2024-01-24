@@ -21,21 +21,20 @@
 
     
     <!-- Telas com os dois iframes -->
-    <div id="tela1" class="tela01">
+    <div id="tela1" class="tela01 responsive-iframe-container">
         <iframe src="https://www.anbima.com.br/pt_br/informar/curvas-de-juros-fechamento.htm" class="iframe"></iframe>
     </div>
-
     
-    <!-- Tela 2 (inicialmente oculto) -->
-    <div id="tela2" class="tela2-container" style="display: none;">
+    <div id="tela2" class="tela2-container responsive-iframe-container" style="display: none;">
         <iframe src="https://fred.stlouisfed.org/graph/graph-landing.php?g=1dRxU" class="tela2-container" scrolling="no" frameborder="0" allowTransparency="true" loading="lazy"></iframe>
     </div>
-    <!-- Card para exibir informações -->
-    <div id="card" style="display: none;">
-        <h3>Observation</h3>
-        <p>Dec 2023: 2.52 <span id="observationValue"></span></p>
-        <p>Updated: Jan 4, 2024</p>
-    </div>
+    
+<!-- Card para exibir informações -->
+<div id="card" style="display: none;">
+    <h3>Observation</h3>
+    <p>Dec 2023: 2.52 <span id="observationValue"></span></p>
+    <p>Updated: Jan 4, 2024</p>
+</div>
     
 
     <script>
