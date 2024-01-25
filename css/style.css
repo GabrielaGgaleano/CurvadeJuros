@@ -47,11 +47,11 @@ overflow: hidden;
 }
 
 #card {
-width: 321px;
-padding: 44px;
+width: 300px;
+padding: 30px;
 position: absolute; /* Posiciona o card em relação à janela do navegador */
-top: 125px; /* Distância do topo da janela */
-right: 59px; /* Distância da direita da janela */
+top: 70px; /* Distância do topo da janela */
+right: 20px; /* Distância da direita da janela */
 justify-content: space-around;
 background-color: #ffffff;
 box-sizing: border-box;
