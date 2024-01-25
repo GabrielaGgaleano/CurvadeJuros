@@ -47,11 +47,11 @@ overflow: hidden;
 }
 
 #card {
-width: 300px;
-padding: 30px;
+width: 321px;
+padding: 44px;
 position: absolute; /* Posiciona o card em relação à janela do navegador */
-top: 70px; /* Distância do topo da janela */
-right: 20px; /* Distância da direita da janela */
+top: 125px; /* Distância do topo da janela */
+right: 59px; /* Distância da direita da janela */
 justify-content: space-around;
 background-color: #ffffff;
 box-sizing: border-box;
@@ -61,22 +61,21 @@ box-shadow: 0 6px 7px -4px rgba(0, 0, 0, 0.2);
 border-left: 7px solid #759ac0;
 }
 
-/* Estilos para o container da tela 2 */
 .tela2-container {
-    position: absolute;
-    top: 120px;
-    left: 50px;
-    width: 100%;
-    height: 100%;
-    border: none;
-    overflow: hidden;
+  position: absolute;
+  top: 120px;
+  left: 50px;
+  width: 100%;
+  height: 100%;
+  border: none;
+  overflow: hidden;
 }
 
 .responsive-iframe-container iframe {
-  position: absolute;
-  top: 30;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
+position: absolute;
+top: 30;
+left: 0;
+width: 100%;
+height: 100%;
+border: 0;
 }
