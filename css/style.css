@@ -1,9 +1,9 @@
-*{
-  margin:0px;
+* {
+  margin: 0px;
   padding: 1px;
   box-sizing: border-box;
   outline: none;
-  font-family:Verdana, Arial, Helvetica, sans-serif;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
 body {
@@ -16,7 +16,8 @@ body {
   overflow: hidden;
   background-color: #f0f0f0; /* Cor de fundo (opcional) */
 }
-.navbar{
+
+.navbar {
   display: flex;
   position: fixed;
   justify-content: space-between;
@@ -29,53 +30,53 @@ body {
   padding-left: 6rem;
   z-index: 1000;
 }
-.profile{
+
+.profile {
   height: -20px;
   width: 200px;
   object-fit: cover;
- 
 }
 
 .iframe {
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-border: none;
-overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 90%;
+  border: none;
+  overflow: hidden;
 }
 
 #card {
-width: 300px;
-padding: 30px;
-position: absolute; /* Posiciona o card em relação à janela do navegador */
-top: 70px; /* Distância do topo da janela */
-right: 20px; /* Distância da direita da janela */
-justify-content: space-around;
-background-color: #ffffff;
-box-sizing: border-box;
-border: 1px solid #d2d2d3;
-border-radius: 5px;
-box-shadow: 0 6px 7px -4px rgba(0, 0, 0, 0.2);
-border-left: 7px solid #759ac0;
+  width: 300px;
+  padding: 30px;
+  position: absolute; /* Posiciona o card em relação à janela do navegador */
+  top: 120px; /* Distância do topo da janela */
+  right: 20px; /* Distância da direita da janela */
+  justify-content: space-around;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  border: 1px solid #d2d2d3;
+  border-radius: 5px;
+  box-shadow: 0 6px 7px -4px rgba(0, 0, 0, 0.2);
+  border-left: 7px solid #759ac0;
 }
 
 .tela2-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 60vh; /* Ajuste a altura conforme necessário */
-  width: 80vw; /* Ajuste a largura conforme necessário */
-  padding-top: 20px; /* Adicione espaço superior conforme necessário */
+  position: absolute;
+  top: 120px;
+  left: 50px;
+  width: 100%;
+  height: 100%;
+  border: none;
+  overflow: hidden;
 }
 
-
 .responsive-iframe-container iframe {
-position: absolute;
-top: 30;
-left: 0;
-width: 100%;
-height: 100%;
-border: 0;
+  position: absolute;
+  top: 30px; /* Adicionei a unidade de medida */
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
